@@ -30,12 +30,18 @@ server.listen(0, '127.0.0.1', async () => {
     assert.match(home, /思绪花园/);
 
     const postPath = home.match(/href=(?:["']([^"']*\/\d{4}\/\d{2}\/[^"']+\/)["']|([^\s>]*\/\d{4}\/\d{2}\/[^\s>]+\/))/)?.slice(1).find(Boolean);
-    assert.ok(postPath, '首页缺少文章详情链接');
-    const postResponse = await fetch(new URL(postPath, origin));
-    assert.equal(postResponse.status, 200);
-    const post = await postResponse.text();
-    assert.match(post, /class=(?:["'][^"']*\bprose\b[^"']*["']|prose(?:\s|>))/);
-    assert.equal((post.match(/<h1\b/gi) || []).length, 1);
+    if (!postPath) {
+      assert.match(home, /这里还没有文章/);
+      const listResponse = await fetch(`${origin}${basePath}/posts/`);
+      assert.equal(listResponse.status, 200);
+      assert.match(await listResponse.text(), /这里还没有内容/);
+    } else {
+      const postResponse = await fetch(new URL(postPath, origin));
+      assert.equal(postResponse.status, 200);
+      const post = await postResponse.text();
+      assert.match(post, /class=(?:["'][^"']*\bprose\b[^"']*["']|prose(?:\s|>))/);
+      assert.equal((post.match(/<h1\b/gi) || []).length, 1);
+    }
 
     const assetPaths = [...home.matchAll(/(?:href|src)=(?:["']([^"']+\.(?:css|js))["']|([^\s>]+\.(?:css|js)))/g)]
       .map((match) => match[1] || match[2]);

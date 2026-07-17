@@ -16,7 +16,15 @@
       <span class="count">{{ len $posts }} PIECES{{ with $latest }} · {{ .Date.Year }}{{ end }}</span>
     </div>
     <div class="garden">
-      {{ range first 6 $posts }}{{ partial "post-card.html" (dict "page" . "home" true) }}{{ end }}
+      {{ if $posts }}
+        {{ range first 6 $posts }}{{ partial "post-card.html" (dict "page" . "home" true) }}{{ end }}
+      {{ else }}
+        <div class="empty-garden">
+          <span aria-hidden="true">新</span>
+          <h3>这里还没有文章</h3>
+          <p>花园已经准备好，等待第一颗念头落下来。</p>
+        </div>
+      {{ end }}
     </div>
     <p class="more-link"><a href="{{ "posts/" | relURL }}">查看全部文章 <span aria-hidden="true">→</span></a></p>
   </section>

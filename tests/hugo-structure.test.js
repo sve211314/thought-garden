@@ -20,6 +20,7 @@ const requiredFiles = [
   'layouts/partials/post-card.html',
   'assets/css/main.css',
   'assets/js/theme.js',
+  'scripts/build.js',
   '.github/workflows/hugo.yaml',
 ];
 
@@ -41,18 +42,23 @@ assert.match(base, /block\s+["']main["']/);
 assert.match(base, /partial\s+["']head\.html["']/);
 
 const contentDirectory = 'content/posts';
-const posts = fs.readdirSync(contentDirectory)
-  .filter((name) => name.endsWith('.md') && name !== '_index.md');
-assert.ok(posts.length >= 6, '至少需要迁移 6 篇 Markdown 文章');
-
-for (const name of posts) {
-  const source = fs.readFileSync(path.join(contentDirectory, name), 'utf8');
-  assert.match(source, /^---[\s\S]*?^---/m, `${name} 缺少 front matter`);
-  assert.match(source, /^title:\s*.+$/m, `${name} 缺少 title`);
-  assert.match(source, /^date:\s*\d{4}-\d{2}-\d{2}/m, `${name} 缺少有效 date`);
-  assert.match(source, /^description:\s*.+$/m, `${name} 缺少 description`);
-  assert.match(source, /^tags:\s*\[/m, `${name} 缺少 tags`);
-  assert.doesNotMatch(source, /draft:\s*true/i, `${name} 不应是草稿`);
+const posts = [];
+function collectPosts(directory) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) collectPosts(file);
+    else if (entry.name.endsWith('.md') && entry.name !== '_index.md') posts.push(file);
+  }
+}
+collectPosts(contentDirectory);
+for (const file of posts) {
+  const source = fs.readFileSync(file, 'utf8');
+  assert.match(source, /^---[\s\S]*?^---/m, `${file} 缺少 front matter`);
+  assert.match(source, /^title:\s*.+$/m, `${file} 缺少 title`);
+  assert.match(source, /^date:\s*\d{4}-\d{2}-\d{2}/m, `${file} 缺少有效 date`);
+  assert.match(source, /^description:\s*.+$/m, `${file} 缺少 description`);
+  assert.match(source, /^tags:\s*\[/m, `${file} 缺少 tags`);
+  assert.match(source, /^draft:\s*(?:true|false)$/m, `${file} 缺少 draft 状态`);
 }
 
 const workflow = fs.readFileSync('.github/workflows/hugo.yaml', 'utf8');

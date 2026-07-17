@@ -93,6 +93,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .section-head h2, .page-header h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 500; letter-spacing: -.05em; line-height: 1.12; }
 .count { color: var(--muted); font: .76rem/1.2 ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; }
 .garden { display: grid; grid-template-columns: repeat(12, 1fr); gap: 22px; }
+.empty-garden { grid-column: 1 / -1; display: grid; min-height: 300px; place-content: center; justify-items: center; border: 1px dashed var(--line); border-radius: 28px; padding: 42px; text-align: center; background: color-mix(in srgb, var(--card) 72%, transparent); }
+.empty-garden > span { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; color: #fffaf0; background: var(--fern); }
+.empty-garden h3 { margin: 22px 0 4px; font-size: 1.7rem; font-weight: 500; }
+.empty-garden p { margin: 0; color: var(--muted); }
 .thought { position: relative; grid-column: span 4; min-height: 330px; overflow: hidden; border: 1px solid rgba(255,255,255,.38); border-radius: 28px; padding: 30px; background: var(--card); box-shadow: var(--shadow); backdrop-filter: blur(12px); transition: transform .35s ease, box-shadow .35s ease; }
 .garden .thought:nth-child(1), .garden .thought:nth-child(5) { grid-column: span 7; }
 .garden .thought:nth-child(2), .garden .thought:nth-child(6) { grid-column: span 5; }
