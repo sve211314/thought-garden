@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一个安静存放灵感、问题与生活片段的个人思绪花园。">
+  <title>思绪花园 · 把想法种下来</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #26352f;
+      --muted: #6f7c75;
+      --paper: #f7f3e9;
+      --card: rgba(255, 253, 247, 0.82);
+      --line: rgba(49, 79, 65, 0.13);
+      --fern: #315f4a;
+      --moss: #79936d;
+      --sun: #dda95a;
+      --rose: #c98275;
+      --shadow: 0 22px 60px rgba(53, 72, 61, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(221, 169, 90, 0.22), transparent 29rem),
+        radial-gradient(circle at 88% 26%, rgba(121, 147, 109, 0.2), transparent 32rem),
+        linear-gradient(145deg, #f9f5ea 0%, #eef1e7 100%);
+      font-family: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      line-height: 1.75;
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: -1;
+      width: 24rem;
+      height: 24rem;
+      border: 1px solid rgba(49, 95, 74, 0.1);
+      border-radius: 48% 52% 58% 42%;
+      content: "";
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    body::before { top: -10rem; right: -8rem; transform: rotate(18deg); }
+    body::after { bottom: -13rem; left: -9rem; animation-delay: -9s; }
+
+    .shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .12em; }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fffaf0;
+      background: var(--fern);
+      box-shadow: 0 8px 18px rgba(49, 95, 74, 0.22);
+    }
+
+    .season { color: var(--muted); font-size: .82rem; letter-spacing: .1em; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 54px;
+      align-items: end;
+      padding: 78px 0 92px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--fern);
+      font: 700 .78rem/1.2 ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3.35rem, 8vw, 7.4rem);
+      font-weight: 500;
+      letter-spacing: -.075em;
+      line-height: .98;
+    }
+
+    h1 em { color: var(--fern); font-style: normal; }
+
+    .hero-note {
+      position: relative;
+      margin: 0 0 8px;
+      padding: 26px 0 0 28px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .hero-note::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--sun);
+      content: "✦";
+      font-size: 1.2rem;
+    }
+
+    .hero-note::after {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      width: 1px;
+      height: 82px;
+      background: linear-gradient(var(--sun), transparent);
+      content: "";
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 500; letter-spacing: -.04em; }
+
+    .count { color: var(--muted); font: .78rem/1.2 ui-sans-serif, system-ui, sans-serif; letter-spacing: .12em; }
+
+    .garden {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      padding-bottom: 88px;
+    }
+
+    .thought {
+      position: relative;
+      grid-column: span 4;
+      min-height: 330px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 28px;
+      padding: 30px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .thought:nth-child(1), .thought:nth-child(5) { grid-column: span 7; }
+    .thought:nth-child(2), .thought:nth-child(6) { grid-column: span 5; }
+
+    .thought:hover { transform: translateY(-7px); box-shadow: 0 30px 70px rgba(53, 72, 61, 0.17); }
+
+    .thought::after {
+      position: absolute;
+      right: -60px;
+      bottom: -70px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: var(--glow, rgba(121, 147, 109, 0.16));
+      content: "";
+    }
+
+    .thought:nth-child(2) { --glow: rgba(221, 169, 90, .2); }
+    .thought:nth-child(3) { --glow: rgba(201, 130, 117, .18); }
+
+    .meta { display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font: .75rem/1.4 ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; }
+
+    .tag { color: var(--fern); font-weight: 700; }
+
+    .thought h3 { max-width: 16em; margin: 52px 0 18px; font-size: clamp(1.55rem, 3vw, 2.25rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.24; }
+
+    .thought p { max-width: 36em; margin: 0; color: #58665f; }
+
+    .seed {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 34px;
+      color: var(--fern);
+      font: 700 .76rem/1.2 ui-sans-serif, system-ui, sans-serif;
+      letter-spacing: .08em;
+    }
+
+    .seed::before { width: 22px; height: 1px; background: currentColor; content: ""; }
+
+    .manifesto {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 54px;
+      margin-bottom: 90px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: clamp(30px, 6vw, 64px);
+      background: rgba(49, 95, 74, .92);
+      color: #f6f1e5;
+      box-shadow: 0 28px 80px rgba(49, 95, 74, .22);
+    }
+
+    .manifesto .eyebrow { color: #d9c28f; }
+    .manifesto h2 { font-size: clamp(2.1rem, 5vw, 4rem); line-height: 1.13; }
+    .manifesto blockquote { margin: 0; color: rgba(255, 255, 255, .76); font-size: clamp(1.05rem, 2vw, 1.32rem); }
+
+    footer { display: flex; justify-content: space-between; gap: 24px; padding: 0 0 42px; color: var(--muted); font: .78rem/1.5 ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; }
+
+    @keyframes drift { to { transform: rotate(35deg) translate3d(22px, -15px, 0); border-radius: 58% 42% 46% 54%; } }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 26px, 1120px); }
+      .topbar { padding-top: 20px; }
+      .season { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 34px; padding: 58px 0 68px; }
+      .hero-note { max-width: 30em; }
+      .garden { gap: 16px; }
+      .thought, .thought:nth-child(n) { grid-column: 1 / -1; min-height: 300px; padding: 25px; }
+      .thought h3 { margin-top: 42px; }
+      .manifesto { grid-template-columns: 1fr; gap: 30px; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">芽</span><span>思绪花园</span></div>
+    <div class="season">第 01 卷 · 盛夏</div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">A quiet place for loud thoughts</p>
+        <h1 id="page-title"><span class="visually-hidden">思绪花园：</span>把一闪而过的<br><em>思绪，种下来。</em></h1>
+      </div>
+      <p class="hero-note">这里不追求完整的答案。只收藏那些值得慢慢长大的问题、片段与微小确信。</p>
+    </section>
+
+    <section aria-labelledby="latest-title">
+      <div class="section-head">
+        <h2 id="latest-title">最近生长的念头</h2>
+        <span class="count">06 PIECES · 2026</span>
+      </div>
+
+      <div class="garden">
+        <article class="thought">
+          <div class="meta"><span class="tag"># 关于生活</span><time datetime="2026-07-17">07.17</time></div>
+          <h3>真正的自由，也许是拥有重新安排一天的能力</h3>
+          <p>不是永远不工作，也不是逃离所有责任，而是在清醒的时候，知道自己的时间正在流向哪里。</p>
+          <span class="seed">一颗正在发芽的种子</span>
+        </article>
+
+        <article class="thought">
+          <div class="meta"><span class="tag"># 小问题</span><time datetime="2026-07-12">07.12</time></div>
+          <h3>如果没有人点赞，我还愿意做这件事吗？</h3>
+          <p>这个问题像一把小筛子，留下真正喜欢的部分。</p>
+          <span class="seed">留待回答</span>
+        </article>
+
+        <article class="thought">
+          <div class="meta"><span class="tag"># 创造</span><time datetime="2026-07-08">07.08</time></div>
+          <h3>先做一个粗糙但存在的版本</h3>
+          <p>想法停在脑中时没有重量。让它落地，哪怕只是一个页面、一段文字、一张草图。</p>
+        </article>
+
+        <article class="thought">
+          <div class="meta"><span class="tag"># 观察</span><time datetime="2026-06-29">06.29</time></div>
+          <h3>慢，不一定是效率的反面</h3>
+          <p>有些路走快了，只会更早抵达一个并不想去的地方。</p>
+        </article>
+
+        <article class="thought">
+          <div class="meta"><span class="tag"># 长期主义</span><time datetime="2026-06-18">06.18</time></div>
+          <h3>值得积累的东西，早期往往看不见回报</h3>
+          <p>阅读、体力、信任、审美和作品，都像地下的根。很长一段时间里，地面看起来什么也没有发生。</p>
+          <span class="seed">继续浇水</span>
+        </article>
+
+        <article class="thought">
+          <div class="meta"><span class="tag"># 今日份</span><time datetime="2026-06-03">06.03</time></div>
+          <h3>把注意力还给眼前</h3>
+          <p>一杯热茶，一阵穿堂风，一次没有拍照的黄昏。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="manifesto" aria-labelledby="manifesto-title">
+      <div>
+        <p class="eyebrow">Garden notes</p>
+        <h2 id="manifesto-title">想法不必宏大，真实就好。</h2>
+      </div>
+      <blockquote>“我想保留的，不只是结论，还有抵达结论之前那些摇摆、犹豫、突然明白的瞬间。它们共同构成了一个人思考的纹理。”</blockquote>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <span>思绪花园 · 一个持续生长的私人角落</span>
+    <span>用好奇心播种，以时间照料</span>
+  </footer>
+</body>
+</html>
