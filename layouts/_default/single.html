@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article class="shell article-page">
+  <header class="article-header">
+    <p class="eyebrow">{{ if eq .Section "posts" }}Garden journal{{ else }}{{ .Section }}{{ end }}</p>
+    <h1>{{ .Title }}</h1>
+    {{ if eq .Section "posts" }}
+      <div class="article-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time>
+        <span>约 {{ .ReadingTime }} 分钟阅读</span>
+      </div>
+    {{ end }}
+  </header>
+  <div class="prose">{{ .Content }}</div>
+  {{ with .GetTerms "tags" }}
+    <footer class="article-tags" aria-label="文章标签">{{ range . }}<a href="{{ .RelPermalink }}"># {{ .LinkTitle }}</a>{{ end }}</footer>
+  {{ end }}
+  {{ if eq .Section "posts" }}
+    <nav class="post-nav" aria-label="相邻文章">
+      <span>{{ with .PrevInSection }}上一篇<br><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</span>
+      <span>{{ with .NextInSection }}下一篇<br><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}</span>
+    </nav>
+  {{ end }}
+</article>
+{{ end }}

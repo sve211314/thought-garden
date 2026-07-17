@@ -1,0 +1,11 @@
+{{ $page := .page | default . }}
+{{ $home := .home | default false }}
+<article class="thought">
+  <div class="meta">
+    <span class="tag">{{ with index $page.Params.tags 0 }}# {{ . }}{{ else }}# 随笔{{ end }}</span>
+    <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "01.02" }}</time>
+  </div>
+  {{ if $home }}<h3><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h3>{{ else }}<h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>{{ end }}
+  <p>{{ $page.Description | default $page.Summary }}</p>
+  {{ with $page.Params.seed }}<span class="seed">{{ . }}</span>{{ end }}
+</article>

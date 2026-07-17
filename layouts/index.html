@@ -1,0 +1,29 @@
+{{ define "main" }}
+<div class="shell">
+  <section class="hero" aria-labelledby="page-title">
+    <div>
+      <p class="eyebrow">A quiet place for loud thoughts</p>
+      <h1 id="page-title"><span class="visually-hidden">思绪花园：</span>把一闪而过的<br><em>思绪，种下来。</em></h1>
+    </div>
+    <p class="hero-note">这里不追求完整的答案。只收藏那些值得慢慢长大的问题、片段与微小确信。</p>
+  </section>
+
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ $latest := index $posts 0 }}
+  <section aria-labelledby="latest-title">
+    <div class="section-head">
+      <h2 id="latest-title">最近生长的念头</h2>
+      <span class="count">{{ len $posts }} PIECES{{ with $latest }} · {{ .Date.Year }}{{ end }}</span>
+    </div>
+    <div class="garden">
+      {{ range first 6 $posts }}{{ partial "post-card.html" (dict "page" . "home" true) }}{{ end }}
+    </div>
+    <p class="more-link"><a href="{{ "posts/" | relURL }}">查看全部文章 <span aria-hidden="true">→</span></a></p>
+  </section>
+
+  <section class="manifesto" aria-labelledby="manifesto-title">
+    <div><p class="eyebrow">Garden notes</p><h2 id="manifesto-title">{{ site.Params.manifestoTitle }}</h2></div>
+    <blockquote>“{{ site.Params.manifesto }}”</blockquote>
+  </section>
+</div>
+{{ end }}
