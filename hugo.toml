@@ -1,0 +1,40 @@
+baseURL = "https://sve211314.github.io/thought-garden/"
+locale = "zh-CN"
+defaultContentLanguage = "zh"
+title = "思绪花园"
+enableRobotsTXT = true
+enableGitInfo = false
+summaryLength = 70
+
+[pagination]
+  pagerSize = 10
+
+[permalinks]
+  posts = "/:year/:month/:slug/"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[params]
+  description = "收藏灵感、问题与生活片段的个人思绪花园。"
+  author = "园丁"
+  season = "第 01 卷 · 盛夏"
+  manifestoTitle = "想法不必宏大，真实就好。"
+  manifesto = "我想保留的，不只是结论，还有抵达结论之前那些摇摆、犹豫、突然明白的瞬间。它们共同构成了一个人思考的纹理。"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
+  [markup.highlight]
+    noClasses = false
+
+[minify]
+  minifyOutput = true

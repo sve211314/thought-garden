@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "node tests/page.test.js"
+    "build": "hugo --minify --cleanDestinationDir",
+    "test:source": "node tests/hugo-structure.test.js",
+    "test:build": "npm run build && node tests/build-output.test.js",
+    "test:e2e": "node tests/e2e.test.js",
+    "test": "npm run test:source && npm run test:build && npm run test:e2e"
   }
 }
